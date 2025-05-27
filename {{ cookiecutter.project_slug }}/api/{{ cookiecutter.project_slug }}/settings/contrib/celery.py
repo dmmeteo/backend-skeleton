@@ -8,4 +8,4 @@ CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_TASK_SERIALIZER = CELERY_RESULT_SERIALIZER = "json"
 CELERY_TIMEZONE = env.str("{{ cookiecutter.__env_prefix }}TIME_ZONE", default="UTC")
 
-CELERYBEAT_SCHEDULE = {}
+CELERY_BEAT_SCHEDULE = {}
