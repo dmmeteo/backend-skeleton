@@ -19,7 +19,7 @@ services:
       - postgres-db
       - redis-db
       - mailpit
-      - minio
+      - rustfs
       - createbuckets
     ports:
       - ${LOCAL_IP:-127.0.0.1}:${API_LOCAL_PORT:-8000}:8000
@@ -51,29 +51,30 @@ services:
     image: axllent/mailpit:latest
     ports:
      - ${LOCAL_IP:-127.0.0.1}:${MAILPIT_LOCAL_PORT:-8025}:8025
-  minio:
-    image: minio/minio:latest
+  rustfs:
+    image: rustfs/rustfs:latest
     ports:
-     - ${LOCAL_IP:-127.0.0.1}:${MINIO_LOCAL_PORT:-9000}:9000
-     - ${LOCAL_IP:-127.0.0.1}:${MINIO_CONSOLE_LOCAL_PORT:-9001}:9001
+     - ${LOCAL_IP:-127.0.0.1}:${RUSTFS_LOCAL_PORT:-9000}:9000
+     - ${LOCAL_IP:-127.0.0.1}:${RUSTFS_CONSOLE_LOCAL_PORT:-9001}:9001
     environment:
-      MINIO_ROOT_USER: {{ cookiecutter.__minio_access_key }}
-      MINIO_ROOT_PASSWORD: {{ cookiecutter.__minio_secret_key }}
+      RUSTFS_ACCESS_KEY: {{ cookiecutter.__rustfs_access_key }}
+      RUSTFS_SECRET_KEY: {{ cookiecutter.__rustfs_secret_key }}
     volumes:
-     - minio-data:/data
-    command: [ "server", "--console-address", ":9001", "/data" ]
+     - rustfs-data:/data
+  # RustFS officially supports MinIO Client (mc) for bucket management
+  # See: https://docs.rustfs.com/developer/mc.html
   createbuckets:
     image: minio/mc
     depends_on:
-      - minio
+      - rustfs
     entrypoint: >
      /bin/sh -c "
-     until (/usr/bin/mc alias set myminio http://minio:9000 {{ cookiecutter.__minio_access_key }} {{ cookiecutter.__minio_secret_key }}) do echo '...waiting...' && sleep 1; done;
-     /usr/bin/mc mb --ignore-existing myminio/{{ cookiecutter.__minio_bucket_name }};
-     /usr/bin/mc anonymous set download myminio/{{ cookiecutter.__minio_bucket_name }};
+     until (/usr/bin/mc alias set myrustfs http://rustfs:9000 {{ cookiecutter.__rustfs_access_key }} {{ cookiecutter.__rustfs_secret_key }}) do echo '...waiting...' && sleep 1; done;
+     /usr/bin/mc mb --ignore-existing myrustfs/{{ cookiecutter.__rustfs_bucket_name }};
+     /usr/bin/mc anonymous set download myrustfs/{{ cookiecutter.__rustfs_bucket_name }};
      exit 0;
      "
 volumes:
   pg-data: {}
   redis-data: {}
-  minio-data: {}
+  rustfs-data: {}

@@ -10,7 +10,7 @@
     "__db_name": "{{ cookiecutter.project_slug | lower() }}_db",
     "__db_user": "{{ cookiecutter.project_slug | lower() }}_user",
     "__db_password": "{{ cookiecutter.project_slug | lower() }}_password",
-    "__minio_access_key": "minioadminuser",
-    "__minio_secret_key": "minioadminpassword",
-    "__minio_bucket_name": "storage"
+    "__rustfs_access_key": "rustfsadmin",
+    "__rustfs_secret_key": "rustfsadmin",
+    "__rustfs_bucket_name": "storage"
 }
