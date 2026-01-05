@@ -72,7 +72,7 @@ It has the following configurations:
 - Environment variables: `RUSTFS_ACCESS_KEY` and `RUSTFS_SECRET_KEY` for authentication.
 - Default credentials: `rustfsadmin` / `rustfsadmin`
 
-RustFS Console (UI) is available at http://localhost:9001 by default.
+RustFS Console (UI) is available at http://localhost:9001 by default. 
 
 ### createbuckets
 
