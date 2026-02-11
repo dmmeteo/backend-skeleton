@@ -16,7 +16,7 @@ class CustomSessionAuthentication(SessionAuthentication):
 
 
 class CustomSessionAuthenticationScheme(OpenApiAuthenticationExtension):
-    target_class = "impacttrash.apps.accounts.api.authentication.CustomSessionAuthentication"
+    target_class = "{{ cookiecutter.project_slug }}.apps.accounts.api.authentication.CustomSessionAuthentication"
     name = "SessionAuth"
 
     def get_security_definition(self, auto_schema):
