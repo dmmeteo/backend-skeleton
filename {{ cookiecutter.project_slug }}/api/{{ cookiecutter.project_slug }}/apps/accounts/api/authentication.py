@@ -1,3 +1,4 @@
+from django.conf import settings
 from drf_spectacular.extensions import OpenApiAuthenticationExtension
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.request import Request
@@ -23,6 +24,6 @@ class CustomSessionAuthenticationScheme(OpenApiAuthenticationExtension):
         return {
             "type": "apiKey",
             "in": "cookie",
-            "name": "sessionid",
+            "name": settings.SESSION_COOKIE_NAME,
             "description": "Session-based authentication using cookie sessions",
         }
