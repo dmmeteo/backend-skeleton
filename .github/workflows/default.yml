@@ -30,4 +30,5 @@ jobs:
           uv run cookiecutter --no-input --overwrite-if-exists --output-dir build .
           cd build/awesome
           cp ./api/.env.example ./api/.env
+          cd api && uv lock && cd ..
           make api-test
